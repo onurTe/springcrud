@@ -1,5 +1,6 @@
 package com.example.UserRecipe.controller;
 
+import com.example.UserRecipe.domain.Recipe;
 import com.example.UserRecipe.domain.RecipeAddForm;
 import com.example.UserRecipe.domain.RecipeAssignForm;
 import com.example.UserRecipe.service.RecipeService;
@@ -66,8 +67,14 @@ public class RecipeController {
 
     @RequestMapping(value = "/recipes/edit/{id}", method = RequestMethod.GET)
     public ModelAndView handleItemUpdate(@ModelAttribute("recipe") RecipeAddForm form, @PathVariable("id") long id) {
+        RecipeAddForm bufForm = new RecipeAddForm();
+        Recipe rp = recipeService.getRecipeById(id);
+        bufForm.setRecipeTag(rp.getTag());
+        bufForm.setRecipeImage(rp.getImage());
+        bufForm.setRecipeDesc(rp.getDescription());
+        bufForm.setRecipeName(rp.getName());
         recipeService.deleteRecipeById(id);
-        return new ModelAndView("updateRecipe", "recipeForm", new RecipeAddForm());
+        return new ModelAndView("updateRecipe", "recipeForm", bufForm);
     }
 
     @RequestMapping(value = "/recipes/edit/{id}", method = RequestMethod.POST)

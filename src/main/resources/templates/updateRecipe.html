@@ -8,13 +8,6 @@
     <title>Add Recipe</title>
 </head>
 <body>
-<nav role="navigation">
-    <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/recipes">Items</a></li>
-    </ul>
-</nav>
-
 <form th:action="@{/recipes}" th:object="${recipeForm}" th:method="post">
     <table>
         <tr>
