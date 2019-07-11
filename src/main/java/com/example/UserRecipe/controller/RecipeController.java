@@ -7,9 +7,11 @@ import com.example.UserRecipe.service.RecipeService;
 import com.example.UserRecipe.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
@@ -45,11 +47,6 @@ public class RecipeController {
         model.put("usernames", userService.getUsernames());
         model.put("assignForm", new RecipeAssignForm());
         return new ModelAndView("recipes", model);
-    }
-    @RequestMapping(value ="/recipes/search",method = RequestMethod.GET)
-    public String getFindName(Model m, @RequestParam("freeText") String name) {
-        m.addAttribute("recipes", recipeService.findByName(name));
-        return "redirect:/recipes";
     }
 
     @RequestMapping(value = "/recipes/{id}", method = RequestMethod.DELETE)
