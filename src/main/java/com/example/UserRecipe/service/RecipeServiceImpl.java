@@ -25,6 +25,22 @@ public class RecipeServiceImpl implements RecipeService{
     }
 
     @Override
+    public void updateRecipe(RecipeAddForm form) {
+        Recipe recipe = new Recipe(form.getRecipeName(),form.getRecipeDesc(),form.getRecipeTag(),form.getRecipeImage());
+        boolean flag = false;
+        long flagID = 0;
+        for(Recipe rec : recipeRepository.findAll()){
+            if(rec.getName().equalsIgnoreCase(recipe.getName()) &&
+                    rec.getDescription().equalsIgnoreCase(recipe.getDescription())&&
+                    rec.getTag().equalsIgnoreCase(recipe.getTag()))
+                    flagID = rec.getId();
+                break;
+        }
+        recipeRepository.deleteById(flagID);
+        recipeRepository.save(recipe);
+    }
+
+    @Override
     public Iterable<Recipe> getRecipes() {
         return recipeRepository.findAll();
     }

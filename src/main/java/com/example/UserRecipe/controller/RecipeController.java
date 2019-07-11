@@ -30,6 +30,7 @@ public class RecipeController {
     public ModelAndView itemAddPage() {
         return new ModelAndView("addRecipe", "recipeForm", new RecipeAddForm());
     }
+
     @RequestMapping(value = "/recipes", method = RequestMethod.POST)
     public String handleItemAdd(
             @Valid @ModelAttribute("recipeForm")  RecipeAddForm form, BindingResult bindingResult) {
@@ -60,6 +61,21 @@ public class RecipeController {
     @RequestMapping(value = "/recipes/{id}", method = RequestMethod.PUT)
     public String handleItemAssign(@ModelAttribute("user") RecipeAssignForm form, @PathVariable("id") long id) {
         recipeService.assignRecipe(form.getUsername(), id);
+        return "redirect:/recipes";
+    }
+
+    @RequestMapping(value = "/recipes/edit/{id}", method = RequestMethod.GET)
+    public ModelAndView handleItemUpdate(@ModelAttribute("recipe") RecipeAddForm form, @PathVariable("id") long id) {
+        recipeService.deleteRecipeById(id);
+        return new ModelAndView("updateRecipe", "recipeForm", new RecipeAddForm());
+    }
+
+    @RequestMapping(value = "/recipes/edit/{id}", method = RequestMethod.POST)
+    public String handleItemUpdate(
+            @Valid @ModelAttribute("recipeForm")  RecipeAddForm form, BindingResult bindingResult) {
+        if (bindingResult.hasErrors())
+            return "updateRecipe";
+        recipeService.addRecipe(form);
         return "redirect:/recipes";
     }
 }

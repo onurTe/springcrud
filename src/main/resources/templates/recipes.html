@@ -24,6 +24,9 @@ http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
             <form th:action="@{/recipes/} + ${recipe.id}" th:method="delete">
                 <button type="submit">Delete</button>
             </form>
+            <form th:action="@{/recipes/edit/} + ${recipe.id}" th:method="get">
+                <button type="submit">Update</button>
+            </form>
         </td>
         <td><a th:href="@{/recipes/} + ${recipe.id}" th:text="${recipe.name}">RecipeName</a></td>
         <td th:text="${recipe.name}">Item code will appear here</td>
