@@ -7,6 +7,8 @@ import com.example.UserRecipe.repository.RecipeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -39,6 +41,17 @@ public class RecipeServiceImpl implements RecipeService{
         recipeRepository.deleteById(flagID);
         recipeRepository.save(recipe);
     }
+
+    @Override
+    public List<Recipe> findByName(String name) {
+        List<Recipe> list = new ArrayList<>();
+        for(Recipe rc : recipeRepository.findAll()){
+            if(rc.getName().equalsIgnoreCase(name))
+                list.add(rc);
+        }
+        return list;
+    }
+
 
     @Override
     public Iterable<Recipe> getRecipes() {

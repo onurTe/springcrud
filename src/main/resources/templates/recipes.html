@@ -13,6 +13,11 @@ http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
         <li><a href="/recipes/add">Add item</a></li>
     </ul>
 </nav>
+<form th:action="@{/recipes/search}">
+    <input type = "text" name = "freeText" placeholder = "SearchName"/></input>
+    <input type = "submit" value = "search"/>
+</form>
+
 <table>
     <tr>
         <th></th>
