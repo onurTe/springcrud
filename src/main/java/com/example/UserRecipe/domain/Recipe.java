@@ -23,11 +23,7 @@ public class Recipe {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-
-    public User getUser() {
-        return user;
-    }
-
+    
     public void setUser(User user) {
         this.user = user;
     }
@@ -83,14 +79,4 @@ public class Recipe {
         this.image = image;
     }
 
-    @Override
-    public String toString() {
-        return "Recipe{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", tag='" + tag + '\'' +
-                ", image='" + image + '\'' +
-                '}';
-    }
 }

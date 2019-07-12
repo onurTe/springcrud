@@ -6,17 +6,17 @@ import com.example.UserRecipe.domain.RecipeAssignForm;
 import com.example.UserRecipe.service.RecipeService;
 import com.example.UserRecipe.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 @Controller
 public class RecipeController {
@@ -43,7 +43,7 @@ public class RecipeController {
     @RequestMapping("/recipes")
     public ModelAndView getRecipesPage() {
         Map<String, Object> model = new HashMap<String, Object>();
-        model.put("recipes", recipeService.getRecipes());
+        model.put("recipes", recipeService.getAllRecipes());
         model.put("usernames", userService.getUsernames());
         model.put("assignForm", new RecipeAssignForm());
         return new ModelAndView("recipes", model);
@@ -85,5 +85,17 @@ public class RecipeController {
         recipeService.addRecipe(form);
         return "redirect:/recipes";
     }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/rest/recipes")
+    @ResponseBody
+    public ResponseEntity<Set<Recipe>> getRecipesRest() {
+        Iterable<Recipe> owners = recipeService.getAllRecipes();
+        Set<Recipe> newSet = new HashSet<>();
+        for(Recipe e : owners)
+            newSet.add(e);
+
+        return ResponseEntity.ok(newSet);
+    }
+
 
 }

@@ -42,6 +42,7 @@ public class UserServiceImpl implements UserService  {
     public User getUserById(long id) {
         return userRepository.findById(id).get();
     }
+
     @Override
     public Map<String, List<Recipe>> numberOfRecipesByName(long userId) {
         Map<String, List<Recipe>> map = new HashMap<String, List<Recipe>>();

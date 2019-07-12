@@ -6,7 +6,7 @@ import com.example.UserRecipe.domain.RecipeAddForm;
 public interface RecipeService {
     void addRecipe(RecipeAddForm form);
     void updateRecipe(RecipeAddForm form);
-    Iterable<Recipe> getRecipes();
+    Iterable<Recipe> getAllRecipes();
     void deleteRecipeById(long id);
     Recipe getRecipeById(long id);
     Recipe assignRecipe(String username, long recipeId);

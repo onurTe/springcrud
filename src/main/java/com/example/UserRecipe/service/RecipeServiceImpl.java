@@ -49,7 +49,7 @@ public class RecipeServiceImpl implements RecipeService{
 
 
     @Override
-    public Iterable<Recipe> getRecipes() {
+    public Iterable<Recipe> getAllRecipes() {
         return recipeRepository.findAll();
     }
     @Override
@@ -60,6 +60,7 @@ public class RecipeServiceImpl implements RecipeService{
     public Recipe getRecipeById(long id) {
         return recipeRepository.findById(id).get();
     }
+
     @Override
     public Recipe assignRecipe(String username, long recipeId) {
         User user = userService.getUserByUsername(username);
