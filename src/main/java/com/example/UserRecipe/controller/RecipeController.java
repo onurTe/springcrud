@@ -9,6 +9,7 @@ import com.example.UserRecipe.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -66,6 +67,14 @@ public class RecipeController {
         return "redirect:/recipes";
     }
 
+    @RequestMapping(value="recipes/editt/{resId}", method=RequestMethod.GET)
+    public String postViewGet (@PathVariable Long resId, ModelMap model)
+    {
+        Recipe recipe = recipeService.getRecipeById(resId);
+        model.put("recipe",recipe);
+
+        return "recipe";
+    }
     @RequestMapping(value = "/recipes/edit/{id}", method = RequestMethod.GET)
     public ModelAndView handleItemUpdate(@ModelAttribute("recipe") RecipeUpdateForm form, @PathVariable long id) {
         RecipeUpdateForm bufForm = new RecipeUpdateForm();

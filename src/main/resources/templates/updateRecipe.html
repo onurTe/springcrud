@@ -8,9 +8,9 @@
     <title>Add Recipe</title>
 </head>
 <body>
-<form th:action="@{/recipes}" th:object="${recipeForm2}" th:method="post">
+    <form th:action="@{/recipes/edit/} + ${recipe.id}" th:object="${recipeForm2}" th:method="post">
     <table>
-        <tr><input type="hidden" th:field="*{id}"/></tr>
+        <tr><input type="hidden" th:field="${id}"/></tr>
         <tr>
             <td>Recipe Name:</td>
             <td><input type="text" th:field="*{recipeName}" /></td>
