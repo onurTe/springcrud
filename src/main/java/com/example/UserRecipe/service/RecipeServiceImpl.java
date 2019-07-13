@@ -2,6 +2,7 @@ package com.example.UserRecipe.service;
 
 import com.example.UserRecipe.domain.Recipe;
 import com.example.UserRecipe.domain.RecipeAddForm;
+import com.example.UserRecipe.domain.RecipeUpdateForm;
 import com.example.UserRecipe.domain.User;
 import com.example.UserRecipe.repository.RecipeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,32 +22,10 @@ public class RecipeServiceImpl implements RecipeService{
     public void addRecipe(RecipeAddForm form) {
         Recipe recipe = new Recipe(form.getRecipeName(),form.getRecipeDesc(),form.getRecipeTag(),form.getRecipeImage());
         recipeRepository.save(recipe);
-        System.out.println(recipeRepository.findById(recipe.getId()));
     }
 
     @Override
-    public void updateRecipe(RecipeAddForm form) {
-        Recipe recipe = new Recipe(form.getRecipeName(),form.getRecipeDesc(),form.getRecipeTag(),form.getRecipeImage());
-        boolean flag = false;
-        long flagID = 0;
-        for(Recipe rec : recipeRepository.findAll()){
-            if(rec.getName().equalsIgnoreCase(recipe.getName()) &&
-                    rec.getDescription().equalsIgnoreCase(recipe.getDescription())&&
-                    rec.getTag().equalsIgnoreCase(recipe.getTag()))
-                    flagID = rec.getId();
-                break;
-        }
-        recipeRepository.deleteById(flagID);
-        recipeRepository.save(recipe);
-    }
-
-    @Override
-    public Iterable<Recipe> findByNames(String name) {
-
-        return recipeRepository.findByName(name);
-
-    }
-
+    public Iterable<Recipe> findByNames(String name) { return recipeRepository.findByName(name); }
 
     @Override
     public Iterable<Recipe> getAllRecipes() {
@@ -56,6 +35,27 @@ public class RecipeServiceImpl implements RecipeService{
     public void deleteRecipeById(long id) {
         recipeRepository.deleteById(id);
     }
+
+    @Override
+    public void updateRecipeById(Recipe rp,long id) {
+        Recipe recipe = recipeRepository.findById(id).get();
+        recipe.setTag(rp.getTag());
+        recipe.setImage(rp.getImage());
+        recipe.setDescription(rp.getDescription());
+        recipe.setName(rp.getName());
+        recipeRepository.save(recipe);
+    }
+
+    @Override
+    public void updateRecipeByIdAndForm(RecipeUpdateForm form, long id) {
+        Recipe recipe = recipeRepository.findById(id).get();
+        recipe.setTag(form.getRecipeTag());
+        recipe.setImage(form.getRecipeImage());
+        recipe.setDescription(form.getRecipeDesc());
+        recipe.setName(form.getRecipeName());
+        recipeRepository.save(recipe);
+    }
+
     @Override
     public Recipe getRecipeById(long id) {
         return recipeRepository.findById(id).get();

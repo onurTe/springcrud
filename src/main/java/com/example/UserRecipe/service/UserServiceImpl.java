@@ -25,6 +25,8 @@ public class UserServiceImpl implements UserService  {
     public Iterable<User> getUsers() {
         return userRepository.findAll();
     }
+
+    @Override
     public List<String> getUsernames() {
         List<String> usernames = new ArrayList<String>();
         Iterator iterator = getUsers().iterator();

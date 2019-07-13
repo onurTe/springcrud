@@ -1,5 +1,7 @@
 package com.example.UserRecipe.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 
 @Entity
@@ -11,7 +13,7 @@ public class Recipe {
 
     @Column(name = "id", nullable = false, updatable = false)
     private long id;
-    @Column(name = "code", nullable = false, updatable = false, unique = true)
+    @Column(name = "code", nullable = false)
     private String name;
     @Column(name = "description", nullable = false)
     private String description;
@@ -20,10 +22,15 @@ public class Recipe {
     @Column(name = "image", nullable = false)
     private String image;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-    
+
+    public User getUser() {
+        return user;
+    }
+
     public void setUser(User user) {
         this.user = user;
     }

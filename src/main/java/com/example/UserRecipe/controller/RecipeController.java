@@ -3,6 +3,7 @@ package com.example.UserRecipe.controller;
 import com.example.UserRecipe.domain.Recipe;
 import com.example.UserRecipe.domain.RecipeAddForm;
 import com.example.UserRecipe.domain.RecipeAssignForm;
+import com.example.UserRecipe.domain.RecipeUpdateForm;
 import com.example.UserRecipe.service.RecipeService;
 import com.example.UserRecipe.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,26 +67,30 @@ public class RecipeController {
     }
 
     @RequestMapping(value = "/recipes/edit/{id}", method = RequestMethod.GET)
-    public ModelAndView handleItemUpdate(@ModelAttribute("recipe") RecipeAddForm form, @PathVariable("id") long id) {
-        RecipeAddForm bufForm = new RecipeAddForm();
+    public ModelAndView handleItemUpdate(@ModelAttribute("recipe") RecipeUpdateForm form, @PathVariable long id) {
+        RecipeUpdateForm bufForm = new RecipeUpdateForm();
         Recipe rp = recipeService.getRecipeById(id);
+        bufForm.setId(id);
         bufForm.setRecipeTag(rp.getTag());
         bufForm.setRecipeImage(rp.getImage());
         bufForm.setRecipeDesc(rp.getDescription());
         bufForm.setRecipeName(rp.getName());
-        recipeService.deleteRecipeById(id);
-        return new ModelAndView("updateRecipe", "recipeForm", bufForm);
+
+        return new ModelAndView("updateRecipe", "recipeForm2", bufForm);
     }
 
     @RequestMapping(value = "/recipes/edit/{id}", method = RequestMethod.POST)
     public String handleItemUpdate(
-            @Valid @ModelAttribute("recipeForm")  RecipeAddForm form, BindingResult bindingResult) {
+            @Valid @ModelAttribute("recipeForm2")  RecipeUpdateForm form, BindingResult bindingResult,@PathVariable Long id) {
         if (bindingResult.hasErrors())
             return "updateRecipe";
-        recipeService.addRecipe(form);
+
+        recipeService.updateRecipeByIdAndForm(form,id);
         return "redirect:/recipes";
     }
 
+
+    //rest methods
     @RequestMapping(method = RequestMethod.GET, value = "/rest/recipes")
     @ResponseBody
     public ResponseEntity<Set<Recipe>> getRecipesRest() {
@@ -95,6 +100,43 @@ public class RecipeController {
             newSet.add(e);
 
         return ResponseEntity.ok(newSet);
+    }
+    @RequestMapping(method = RequestMethod.POST, value = "/rest/recipes/add")
+    @ResponseBody
+    public ResponseEntity<Recipe> addRecipesRest(@RequestBody(required = false) Recipe rp) {
+        RecipeAddForm bufForm = new RecipeAddForm();
+        bufForm.setRecipeTag(rp.getTag());
+        bufForm.setRecipeImage(rp.getImage());
+        bufForm.setRecipeDesc(rp.getDescription());
+        bufForm.setRecipeName(rp.getName());
+        recipeService.addRecipe(bufForm);
+        return ResponseEntity.ok(rp);
+    }
+    @RequestMapping(method = RequestMethod.GET, value = "/rest/recipes/{id}")
+    @ResponseBody
+    public ResponseEntity<Recipe> getRecipeRest(@PathVariable Long id) {
+        Recipe rp = recipeService.getRecipeById(id);
+        return ResponseEntity.ok(rp);
+    }
+    @RequestMapping(method = RequestMethod.DELETE, value = "/rest/recipes/delete/{id}")
+    @ResponseBody
+    public ResponseEntity<Recipe> deleteRecipesRest(@PathVariable Long id) {
+        Recipe rp = recipeService.getRecipeById(id);
+        recipeService.deleteRecipeById(id);
+        return ResponseEntity.ok(rp);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/rest/recipes/edit/{id}")
+    @ResponseBody
+    public ResponseEntity<Recipe> updateRecipesRest(@RequestBody(required = false) Recipe rp, @PathVariable Long id) {
+        recipeService.updateRecipeById(rp,id);
+        return ResponseEntity.ok(rp);
+    }
+    @RequestMapping(method = RequestMethod.GET, value = "/rest/recipes/search/{name}")
+    @ResponseBody
+    public ResponseEntity<Iterable<Recipe>> searchRecipesRest(@PathVariable String name) {
+        Iterable<Recipe> rp =recipeService.findByNames(name);
+        return ResponseEntity.ok(rp);
     }
 
 

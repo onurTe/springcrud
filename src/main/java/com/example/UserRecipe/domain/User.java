@@ -1,5 +1,7 @@
 package com.example.UserRecipe.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.Set;
@@ -24,7 +26,8 @@ public class User {
     @Column(name = "lastName", nullable = false)
     private String lastName;
 
-    @OneToMany(mappedBy = "user")
+    @JsonBackReference
+    @OneToMany(mappedBy = "user",fetch = FetchType.EAGER)
     private Set<Recipe> recipes;
     public User() {
     }
