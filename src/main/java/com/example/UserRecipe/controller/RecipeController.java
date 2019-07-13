@@ -1,15 +1,12 @@
 package com.example.UserRecipe.controller;
 
-import com.example.UserRecipe.domain.Recipe;
-import com.example.UserRecipe.domain.RecipeAddForm;
-import com.example.UserRecipe.domain.RecipeAssignForm;
-import com.example.UserRecipe.domain.RecipeUpdateForm;
+import com.example.UserRecipe.domain.*;
 import com.example.UserRecipe.service.RecipeService;
 import com.example.UserRecipe.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -67,14 +64,6 @@ public class RecipeController {
         return "redirect:/recipes";
     }
 
-    @RequestMapping(value="recipes/editt/{resId}", method=RequestMethod.GET)
-    public String postViewGet (@PathVariable Long resId, ModelMap model)
-    {
-        Recipe recipe = recipeService.getRecipeById(resId);
-        model.put("recipe",recipe);
-
-        return "recipe";
-    }
     @RequestMapping(value = "/recipes/edit/{id}", method = RequestMethod.GET)
     public ModelAndView handleItemUpdate(@ModelAttribute("recipe") RecipeUpdateForm form, @PathVariable long id) {
         RecipeUpdateForm bufForm = new RecipeUpdateForm();
@@ -98,6 +87,14 @@ public class RecipeController {
         return "redirect:/recipes";
     }
 
+    @GetMapping("/recipes/search")
+    public String getProduct(Model model,
+                             @ModelAttribute("myFormObject") RecipeSearchForm myFormObject,
+                             BindingResult result) {
+        Iterable<Recipe> list = recipeService.findByNames(myFormObject.getSearchName());
+        model.addAttribute("recipes", list);
+        return "recipes";
+    }
 
     //rest methods
     @RequestMapping(method = RequestMethod.GET, value = "/rest/recipes")
