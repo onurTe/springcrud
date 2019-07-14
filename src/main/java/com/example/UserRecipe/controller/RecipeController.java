@@ -107,7 +107,7 @@ public class RecipeController {
 
         return ResponseEntity.ok(newSet);
     }
-    @RequestMapping(method = RequestMethod.POST, value = "/rest/recipes/add")
+    @RequestMapping(method = RequestMethod.POST, value = "/rest/recipes/add",consumes = "application/json")
     @ResponseBody
     public ResponseEntity<Recipe> addRecipesRest(@RequestBody(required = false) Recipe rp) {
         RecipeAddForm bufForm = new RecipeAddForm();

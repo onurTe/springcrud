@@ -10,14 +10,16 @@ http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <nav role="navigation">
     <ul>
         <li><a href="/">Home</a></li>
-        <li><a href="/recipes/add">Add item</a></li>
+        <li><a href="/recipes/add">Add recipe</a></li>
     </ul>
 </nav>
 <table>
     <tr>
         <th></th>
-        <th>Item code</th>
-        <th>Item type</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Tag</th>
+        <th>Image</th>
     </tr>
     <tr th:each="recipe : ${recipes}">
         <td>
@@ -29,8 +31,10 @@ http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
             </form>
         </td>
         <td><a th:href="@{/recipes/} + ${recipe.id}" th:text="${recipe.name}">RecipeName</a></td>
-        <td th:text="${recipe.name}">Item code will appear here</td>
+
         <td th:text="${recipe.description}">Item type will appear here</td>
+        <td th:text="${recipe.tag}">Item type will appear here</td>
+        <td th:text="${recipe.image}">Item type will appear here</td>
         <td>
             <form th:action="@{/recipes/} + ${recipe.id}" th:method="put">
                 <select th:field="*{assignForm.username}">
