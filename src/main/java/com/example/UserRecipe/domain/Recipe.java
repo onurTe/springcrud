@@ -13,7 +13,7 @@ public class Recipe {
 
     @Column(name = "id", nullable = false, updatable = false)
     private long id;
-    @Column(name = "code", nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
     @Column(name = "description", nullable = false)
     private String description;
